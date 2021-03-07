@@ -1,0 +1,78 @@
+{% extends "banner_pages.html" %}
+
+{% block content %}
+<div class="row">
+    <a href="#" class="genric-btn default-border">Agregar Aerolinia</a>
+    <a href="#" class="genric-btn default-border">Agregar Aeropuerto</a>
+</div>
+
+<div class="section-top-border">
+						<div class="row">
+                            <div class="col-lg-12 col-md-12">
+								<form method="post" action="" >
+                                    <div class="row">
+                                        <div class="single-element-widget col-md-4">
+                                            {% csrf_token %}
+                                            {{ form.media }}
+                                            <div class="default-select" id="default-select">
+                                                <p>Aerolinea</p>
+                                                {{form.airline}}
+                                            </div>
+                                        </div>
+                                        <div class="single-element-widget col-md-4">
+                                            <div class="default-select" id="default-select">
+                                                <p>Aeropuerto origen</p>
+                                                {{form.airport_origin}}
+                                            </div>
+                                        </div>
+                                        <div class="single-element-widget col-md-4">
+                                            <div class="default-select" id="default-select">
+                                                <p>Aeropuerto destino</p>
+                                                {{form.airport_destination}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <div class="row">
+                                        <div class="single-element-widget col-md-4">
+                                            <p>Fecha y hora de partida</p>
+                                            {{form.depart_time}}
+                                        </div>
+                                        <div class="single-element-widget col-md-4">
+                                            <p>Fecha y hora de llegada</p>
+                                            {{form.arrival_time}}
+                                        </div>
+                                        <div class="single-element-widget col-md-4">
+                                            <p>N° de asientos</p>
+                                            {{form.n_seat}}
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <div class="row">
+                                        <div class="single-element-widget col-md-4">
+                                            <p>Requerimientos</p>
+                                            {{form.requirements}}
+                                        </div>
+                                        <div class="single-element-widget col-md-4">
+                                            <p>Estado</p>
+                                            {{form.status}}
+                                        </div>
+                                        <div class="single-element-widget col-md-4">
+                                            <p>Precio</p>
+                                            {{form.price}}
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <br>
+                                <button type="submit" class="genric-btn primary radius offset-6">{{title}}</button>
+                                </form>
+
+                            </div>
+                        </div>
+</div>
+
+{% endblock %}
