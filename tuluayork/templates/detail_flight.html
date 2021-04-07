@@ -2,4 +2,105 @@
 
 {% block content %}
 
+<section class="price-area section-gap">
+				<div class="container">
+		            <div class="row d-flex justify-content-center">
+		                <div class="menu-content pb-70 col-lg-8">
+		                    <div class="title text-center">
+		                        <h1 class="mb-10">We Provide Affordable Prices</h1>
+		                        <p>Well educated, intellectual people, especially scientists at all times demonstrate considerably.</p>
+		                    </div>
+		                </div>
+		            </div>
+					<div class="row">
+						{% csrf_token %}
+                        <div class="col-lg-6 insurence-right">
+							<img class="img-fluid img-two" src="https://images.unsplash.com/photo-1588012912368-b0984ec2ce12?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1944&q=80" alt="">
+						</div>
+						<div class="col-lg-6">
+							<div class="single-price">
+								<h4>Información del vuelo</h4>
+								<ul class="price-list">
+									<li class="d-flex justify-content-between align-items-center">
+										<span>Aeropuerto de origen</span>
+										<a>{{object.airport_origin}}</a>
+									</li>
+                                    <br>
+									<li class="d-flex justify-content-between align-items-center">
+										<span>Aeropuerto destino</span>
+										<a>{{object.airport_destination}}</a>
+									</li>
+                                    <br>
+									<li class="d-flex justify-content-between align-items-center">
+										<span>Fecha de salida</span>
+										<a>{{object.depart_time}}</a>
+									</li>
+                                    <br>
+									<li class="d-flex justify-content-between align-items-center">
+										<span>Fecha de llegada</span>
+										<a>{{object.arrival_time}}</a>
+									</li>
+                                    <br>
+									<li class="d-flex justify-content-between align-items-center">
+										<span>Requisitos</span>
+										<a>{{object.requirements}}</a>
+									</li>
+                                    <br>
+                                    <li class="d-flex justify-content-between align-items-center">
+										<span>Estado</span>
+										<a>{{object.status}}</a>
+									</li>
+                                    <br>
+									<li class="d-flex justify-content-between align-items-center">
+										<span>Precio</span>
+										<a>{{object.price}}</a>
+									</li>
+									<br>
+									<br>
+									{% if request.user.is_superuser %}
+
+									{% else %}
+									<li>
+										<button class="genric-btn primary circle offset-4" onclick="newReservation();">Reservar Vuelo</button>
+									</li>
+									{% endif %}
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
 {% endblock %}
+
+
+{% block js %}
+
+<script type="text/javascript">
+	
+	function newReservation() {
+		data = {
+			'user' : "{{ request.user.id }}",
+			'flight' : "{{ object.id }}",
+			csrfmiddlewaretoken: $("[name = 'csrfmiddlewaretoken']").val()
+		}
+
+		$.ajax({
+			data: data,
+			url: "{% url 'newReservation' %}",
+			type: 'POST',
+			success: function(response) {
+				console.log(response);
+				window.location.href = response.url;
+			},
+			error: function(error) {
+				console.log(error);
+
+			}
+		})
+	}
+	
+
+</script>
+{% endblock %}
+

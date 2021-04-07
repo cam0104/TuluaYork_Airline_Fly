@@ -2,8 +2,8 @@
 
 {% block content %}
 <div class="row">
-    <a href="#" class="genric-btn default-border">Agregar Aerolinia</a>
-    <a href="#" class="genric-btn default-border">Agregar Aeropuerto</a>
+    <a href="{% url 'newAirline' %}" class="genric-btn default-border">Agregar Aerolinia</a>
+    <a href="{% url 'newAirport' %}" class="genric-btn default-border">Agregar Aeropuerto</a>
 </div>
 
 <div class="section-top-border">
@@ -11,7 +11,7 @@
                             <div class="col-lg-12 col-md-12">
 								<form method="post" action="" >
                                     <div class="row">
-                                        <div class="single-element-widget col-md-4">
+                                        <div class="single-element-widget col-md-3">
                                             {% csrf_token %}
                                             {{ form.media }}
                                             <div class="default-select" id="default-select">
@@ -19,16 +19,22 @@
                                                 {{form.airline}}
                                             </div>
                                         </div>
-                                        <div class="single-element-widget col-md-4">
+                                        <div class="single-element-widget col-md-3">
                                             <div class="default-select" id="default-select">
                                                 <p>Aeropuerto origen</p>
                                                 {{form.airport_origin}}
                                             </div>
                                         </div>
-                                        <div class="single-element-widget col-md-4">
+                                        <div class="single-element-widget col-md-3">
                                             <div class="default-select" id="default-select">
                                                 <p>Aeropuerto destino</p>
                                                 {{form.airport_destination}}
+                                            </div>
+                                        </div>
+                                        <div class="single-element-widget col-md-3">
+                                            <div class="default-select" id="default-select">
+                                                <p>Destino</p>
+                                                {{form.destination_name}}
                                             </div>
                                         </div>
                                     </div>
@@ -69,8 +75,7 @@
                                     <br>
                                     <br>
                                 <button type="submit" class="genric-btn primary radius offset-6">{{title}}</button>
-                                </form>
-
+                            </form>
                             </div>
                         </div>
 </div>

@@ -1,0 +1,54 @@
+{% extends "banner_pages.html" %}
+
+{% block content %}
+    {% if request.user.is_superuser %}
+    <a href="{% url 'CreateFlight' %}" class="genric-btn primary circle offset-10">Crear nuevo vuelo</a>
+    <br>
+    <br>
+    <br>
+    {% endif %}
+
+<section class="destinations-area ">
+				<div class="container">
+					<div class="row">
+                        {% if object_list %}
+                        {% for flights in object_list %}
+						<div class="col-lg-4">
+							<div class="single-destinations">
+								<div class="thumb">
+									<img src="https://images.unsplash.com/photo-1588012912368-b0984ec2ce12?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1944&q=80" alt="">
+								</div>
+								<div class="details">
+									<h4>{{flights.destination_name}}</h4>
+									<ul class="package-list">
+										<li class="d-flex justify-content-between align-items-center">
+											<span>Fecha</span>
+											<span>{{flights.depart_time}}</span>
+										</li>
+										<li class="d-flex justify-content-between align-items-center">
+											<span>Aerolinea</span>
+											<span>{{flights.airline}}</span>
+										</li>
+										<li class="d-flex justify-content-between align-items-center">
+											<span>Precio</span>
+											<a class="price-btn">${{flights.price}}</a>
+										</li>
+                                        {% if request.user.is_superuser %}
+											<div class="btn-group">
+												<a href="{% url 'DetailFlight' flights.id %}" button type="button" class="btn btn-sm btn-outline-primary">Ver detalles</button></a>
+												<a href="{% url 'UpdateFlight' flights.id %}" button type="button" class="btn btn-sm btn-outline-warning">Editar</abutton></a>
+												<button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#exampleModal" >Eliminar</button>
+											</div>
+										{% else %}
+											<a href="{% url 'DetailFlight' flights.id %}" button type="button" class="btn btn-sm btn-outline-warning offset-4">Reservar</button></a>
+                                        {% endif %}
+									</ul>
+								</div>
+							</div>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+</section>
+{% endblock %}

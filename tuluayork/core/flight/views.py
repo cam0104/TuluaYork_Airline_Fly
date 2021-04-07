@@ -1,51 +1,133 @@
+from django.db.models import query
 from core.flight.models import *
+from django.http import HttpResponse, JsonResponse
+from core.flight.models import *
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from core.flight.forms import flightsForm
-from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView, DeleteView
+from core.flight.forms import *
+from django.views.decorators.clickjacking import xframe_options_exempt
+from django.views.generic import (
+    TemplateView,
+    ListView,
+    CreateView,
+    DetailView,
+    UpdateView,
+    DeleteView,
+)
+from django.contrib.auth.models import User
 
 
 class flightsView(ListView):
     model = flight
-    template_name = 'list_flights.html'
+    template_name = "list_flights.html"
 
-    #def get_queryset(self):
-        #return flight.arrival_time.filter()
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return flight.objects.all()
+        else:
+            return flight.objects.filter(depart_time__month=4)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Vuelos disponibles'
-        return  context
+        context["title"] = "Vuelos disponibles"
+        return context
+    
+class flightsReservationsView(ListView):
+    model = booking
+    template_name = "flight_reservation_list.html"
+    
+    def get_queryset(self):
+        query = self.model.objects.filter(user_reservation = self.request.user.id)
+        return query
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Vuelos reservados"
+        return context
 
 
 class DetailFlightView(DetailView):
     model = flight
-    template_name = 'detail_flight.html'
-    #context_object_name = 'post'
+    template_name = "detail_flight.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Detalles del vuelo"
+        return context
 
 
 class flightsCreateView(CreateView):
     model = flight
     form_class = flightsForm
-    template_name = 'flight_create.html'
-    success_url = reverse_lazy('Flights')
+    template_name = "flight_create.html"
+    success_url = reverse_lazy("Flights")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Agregar un vuelo'
-        return  context
+        context["title"] = "Agregar un vuelo"
+        return context
+
 
 class flightsUpdateView(UpdateView):
     model = flight
     form_class = flightsForm
-    template_name = 'flight_create.html'
-    success_url = reverse_lazy('Flights')
+    template_name = "flight_create.html"
+    success_url = reverse_lazy("Flights")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Editar vuelo'
-        return  context
+        context["title"] = "Editar vuelo"
+        return context
+
 
 class flightsDeleteView(DeleteView):
     model = flight
-    template_name = 'list_flights.html'
-    success_url = reverse_lazy('Flights')
+    template_name = "list_flights.html"
+    success_url = reverse_lazy("Flights")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Detalle vuelo"
+        return context
+
+
+class flightReservation(CreateView):
+    model = booking
+    success_url = reverse_lazy("Flights")
+
+    @xframe_options_exempt
+    def post(self, request, *args, **kwargs):
+        if request.is_ajax():
+            flights = flight.objects.filter(id=request.POST.get("flight")).first()
+            if flights:
+                new_booking = self.model(
+                    flight=flights
+                )
+                new_booking.save()
+                response = JsonResponse({"url": self.success_url})
+                response.status_code = 201
+                return response
+        return redirect("Flights")
+
+
+class airlineCreateView(CreateView):
+    model = airline
+    form_class = airlineForm
+    template_name = "new_airline.html"
+    success_url = reverse_lazy("Flights")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Agregar una aerolinea"
+        return context
+
+class airportCreateView(CreateView):
+    model = airport
+    form_class = airportForm
+    template_name = "new_airport.html"
+    success_url = reverse_lazy("Flights")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Agregar un aeropuerto"
+        return context

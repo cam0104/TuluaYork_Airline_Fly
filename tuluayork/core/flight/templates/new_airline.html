@@ -1,0 +1,28 @@
+{% extends "banner_pages.html" %}
+
+{% block content %}
+<div class="row">
+    <a href="{% url 'CreateFlight' %}" class="genric-btn default-border">Crear vuelo</a>
+    <a href="#" class="genric-btn default-border">Agregar Aeropuerto</a>
+</div>
+
+<div class="section-top-border">
+						<div class="row">
+                            <div class="col-lg-12 col-md-12">
+								<form method="post" action="" >
+                                    <div class="row">
+                                        <div class="single-element-widget col-md-4">
+                                            {% csrf_token %}
+                                            <p>Aerolinea</p>
+                                            {{ form.name }}
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <button type="submit" class="genric-btn primary radius offset-6">{{title}}</button>   
+                                </form>
+                            </div>
+                        </div>
+</div>
+
+{% endblock %}

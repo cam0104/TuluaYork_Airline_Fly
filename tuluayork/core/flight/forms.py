@@ -4,6 +4,39 @@ from tempus_dominus.widgets import DateTimePicker
 from core.flight.models import *
 
 class flightsForm(ModelForm):
+    class Meta:
+        model = flight
+        fields = ['airline',
+                  'airport_origin',
+                  'airport_destination',
+                  'destination_name',
+                  'depart_time',
+                  'arrival_time',
+                  'price',
+                  'requirements',
+                  'n_seat',
+                  'status']
+
+        widgets = {
+            'n_seat' : widgets.NumberInput(attrs={
+                'class': 'form-control',
+                'min' : 0
+            }),
+
+            'price' : widgets.TextInput(
+                attrs={
+                    'class' : 'form-control'
+                }),
+
+            'status' : widgets.TextInput(attrs={
+                'class' : 'form-control'
+            }),
+
+            'destination_name': widgets.TextInput(attrs={
+                'class': 'form-control'
+            })
+        }
+
     depart_time = forms.DateTimeField(widget=DateTimePicker(
         options={
             'useCurrent': True,
@@ -26,30 +59,30 @@ class flightsForm(ModelForm):
         }))
 
     requirements = forms.ModelMultipleChoiceField(queryset=requirement.objects.all(),widget=forms.CheckboxSelectMultiple)
+
+class airlineForm(ModelForm):
     class Meta:
-        model = flight
-        fields = ['airline',
-                  'airport_origin',
-                  'airport_destination',
-                  'depart_time',
-                  'arrival_time',
-                  'price',
-                  'requirements',
-                  'n_seat',
-                  'status']
-
+        model = airline
+        fields = ['name']
+        
         widgets = {
-            'n_seat' : widgets.NumberInput(attrs={
-                'class': 'form-control',
-                'min' : 0
-            }),
-
-            'price' : widgets.TextInput(
-                attrs={
-                    'class' : 'form-control'
-                }),
-
-            'status' : widgets.TextInput(attrs={
+            'name' :  widgets.TextInput(attrs={
                 'class' : 'form-control'
-            })
+            }),
         }
+        
+class airportForm(ModelForm):
+    class Meta:
+        model = airport
+        fields = ['name', 'city']
+        
+        widgets = {
+            'name' :  widgets.TextInput(attrs={
+                'class' : 'form-control'
+            }),
+            
+            'city' :  widgets.TextInput(attrs={
+                'class' : 'form-control'
+            }),
+        }
+    
