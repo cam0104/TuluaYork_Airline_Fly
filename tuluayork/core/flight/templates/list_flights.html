@@ -36,7 +36,7 @@
 											<div class="btn-group">
 												<a href="{% url 'DetailFlight' flights.id %}" button type="button" class="btn btn-sm btn-outline-primary">Ver detalles</button></a>
 												<a href="{% url 'UpdateFlight' flights.id %}" button type="button" class="btn btn-sm btn-outline-warning">Editar</abutton></a>
-												<button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#exampleModal" >Eliminar</button>
+
 											</div>
 										{% else %}
 											<a href="{% url 'DetailFlight' flights.id %}" button type="button" class="btn btn-sm btn-outline-warning offset-4">Reservar</button></a>
