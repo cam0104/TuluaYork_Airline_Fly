@@ -52,7 +52,7 @@ class flightsReservationsView(ListView):
         return super().dispatch(request, *args, **kwargs)
 
     url = 'http://api.openweathermap.org/data/2.5/weather?q=tulua&units=imperial&appid=271d1234d3f497eed5b1d80a07b3fcd1'
-    city = 'Tulua'
+    city = 'Tuluá'
 
     r = requests.get(url.format(city)).json()
 
